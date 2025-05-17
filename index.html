@@ -189,15 +189,26 @@
     </div>
     <div class="result" id="result"></div>
     <div class="choices">
-      <button class="choice-btn pink" data-choice="rock" title="Rock">✊</button>
-      <button class="choice-btn blue" data-choice="paper" title="Paper">✋</button>
-      <button class="choice-btn green" data-choice="scissors" title="Scissors">✌️</button>
+      <button class="choice-btn pink" data-choice="rock" title="Rock">
+        <img src="Asset/Rock.png" alt="Rock" style="width:60px;height:60px;">
+      </button>
+      <button class="choice-btn blue" data-choice="paper" title="Paper">
+        <img src="Asset/Paper.png" alt="Paper" style="width:60px;height:60px;">
+      </button>
+      <button class="choice-btn green" data-choice="scissors" title="Scissors">
+        <img src="Asset/Scissors.png" alt="Scissors" style="width:60px;height:60px;">
+      </button>
     </div>
     <button class="play-again" id="play-again" style="display:none;">Play Again</button>
   </div>
   <script>
     const choices = ['rock', 'paper', 'scissors'];
-    const emojis = { rock: '✊', paper: '✋', scissors: '✌️' };
+    // Use images instead of emojis
+    const images = {
+      rock: 'Asset/Rock.png',
+      paper: 'Asset/Paper.png',
+      scissors: 'Asset/Scissors.png'
+    };
     let playerScore = 0, computerScore = 0;
     const playerScoreEl = document.getElementById('player-score');
     const computerScoreEl = document.getElementById('computer-score');
@@ -228,8 +239,9 @@
     }
 
     function showResult(result, player, computer) {
-      playerVisual.textContent = emojis[player];
-      computerVisual.textContent = emojis[computer];
+      // Show images instead of emojis
+      playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}" style="width:60px;height:60px;">`;
+      computerVisual.innerHTML = `<img src="${images[computer]}" alt="${computer}" style="width:60px;height:60px;">`;
       animateVisual(playerVisual);
       animateVisual(computerVisual);
 
@@ -253,8 +265,8 @@
 
     function resetGame() {
       resultEl.textContent = '';
-      playerVisual.textContent = '';
-      computerVisual.textContent = '';
+      playerVisual.innerHTML = '';
+      computerVisual.innerHTML = '';
       playAgainBtn.style.display = 'none';
       choiceBtns.forEach(btn => btn.disabled = false);
     }
