@@ -37,7 +37,7 @@
       align-items: center;
       min-width: 340px;
       animation: fadeInUp 1s;
-      backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px); /* Gaussian blur */
       position: relative;
       overflow: hidden;
     }
@@ -65,12 +65,12 @@
       background: linear-gradient(135deg, #fff6, #fff2 80%);
       border: none;
       border-radius: 50%;
-      width: 120px;
-      height: 120px;
-      font-size: 3.5em;
+      width: 140px; /* Bigger buttons */
+      height: 140px;
+      font-size: 4em;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 6px 24px #0003;
+      box-shadow: 0 8px 32px #0003;
       outline: none;
       position: relative;
       overflow: hidden;
@@ -81,21 +81,21 @@
     .choice-btn.pink {
       background: linear-gradient(135deg, #ffb6d5 60%, #ffd1e3 100%);
       color: #d72660;
-      box-shadow: 0 6px 24px #d7266033;
+      box-shadow: 0 8px 32px #d7266033;
     }
     .choice-btn.blue {
       background: linear-gradient(135deg, #b2d7ff 60%, #a0e9ff 100%);
       color: #185a9d;
-      box-shadow: 0 6px 24px #185a9d33;
+      box-shadow: 0 8px 32px #185a9d33;
     }
     .choice-btn.green {
       background: linear-gradient(135deg, #b6f5c6 60%, #a8ffde 100%);
       color: #218c5b;
-      box-shadow: 0 6px 24px #218c5b33;
+      box-shadow: 0 8px 32px #218c5b33;
     }
     .choice-btn:hover, .choice-btn:focus {
       transform: scale(1.15) rotate(-5deg);
-      box-shadow: 0 12px 36px #0004;
+      box-shadow: 0 16px 48px #0004;
       filter: brightness(1.08);
       z-index: 2;
     }
