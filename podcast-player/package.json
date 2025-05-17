@@ -1,0 +1,14 @@
+{
+  "name": "podcast-player",
+  "version": "1.0.0",
+  "description": "A simple podcast player with timestamp-linked metadata notes.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "live-server src"
+  },
+  "dependencies": {
+    "live-server": "^1.2.1"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}

@@ -1,0 +1,29 @@
+{
+  "episodes": [
+    {
+      "title": "Episode 1: Introduction to Podcasting",
+      "timestamp": "00:00",
+      "description": "In this episode, we discuss the basics of podcasting and how to get started."
+    },
+    {
+      "title": "Episode 2: Equipment and Setup",
+      "timestamp": "05:30",
+      "description": "We cover the essential equipment needed for podcasting and how to set it up."
+    },
+    {
+      "title": "Episode 3: Recording Techniques",
+      "timestamp": "12:15",
+      "description": "Learn about different recording techniques to improve your podcast quality."
+    },
+    {
+      "title": "Episode 4: Editing Your Podcast",
+      "timestamp": "20:45",
+      "description": "Tips and tricks for editing your podcast to make it sound professional."
+    },
+    {
+      "title": "Episode 5: Publishing and Promotion",
+      "timestamp": "30:00",
+      "description": "How to publish your podcast and promote it to reach a wider audience."
+    }
+  ]
+}
