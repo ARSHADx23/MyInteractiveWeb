@@ -28,7 +28,7 @@
       to { opacity: 1; transform: translateY(0);}
     }
     .game-container {
-      background: rgba(255,255,255,0.18);
+      background: linear-gradient(135deg, #f5d6e6 0%, #b2d7ff 50%, #b6f5c6 100%);
       border-radius: 32px;
       box-shadow: 0 8px 32px #0003;
       padding: 2.5em 3.5em;
@@ -37,7 +37,7 @@
       align-items: center;
       min-width: 340px;
       animation: fadeInUp 1s;
-      backdrop-filter: blur(18px); /* Gaussian blur */
+      backdrop-filter: blur(24px) saturate(140%);
       position: relative;
       overflow: hidden;
     }
@@ -48,7 +48,7 @@
       z-index: 0;
       pointer-events: none;
       background: url('https://www.transparenttextures.com/patterns/noise.png');
-      opacity: 0.25;
+      opacity: 0.18;
       border-radius: 32px;
     }
     @keyframes fadeInUp {
