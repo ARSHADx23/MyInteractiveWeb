@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Podcast Player with Notes</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎙️ My Podcast Player</h1>
+    </header>
+    <main>
+      <section class="player-section">
+        <audio id="podcast-audio" controls>
+          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+          Your browser does not support the audio element.
+        </audio>
+      </section>
+      <section class="notes-section">
+        <h2>📝 Timestamped Notes</h2>
+        <ul id="notes-list"></ul>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
