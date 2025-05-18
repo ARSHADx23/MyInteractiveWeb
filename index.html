@@ -80,6 +80,12 @@
       align-items: center;
       justify-content: center;
     }
+    .choice-btn img {
+      width: 110px;
+      height: 110px;
+      filter: drop-shadow(0 2px 8px #0006) contrast(1.15);
+      /* Make images appear bolder */
+    }
     .choice-btn.pink {
       background: linear-gradient(135deg, #ffb6d5 60%, #ffd1e3 100%);
       color: #d72660;
@@ -167,6 +173,18 @@
       background: linear-gradient(90deg, #185a9d, #43cea2);
       transform: scale(1.05);
     }
+    @keyframes bounce {
+      0%   { transform: translateY(0);}
+      16%  { transform: translateY(-30px);}
+      33%  { transform: translateY(0);}
+      50%  { transform: translateY(-20px);}
+      66%  { transform: translateY(0);}
+      83%  { transform: translateY(-10px);}
+      100% { transform: translateY(0);}
+    }
+    .bouncing {
+      animation: bounce 0.9s cubic-bezier(.68,-0.55,.27,1.55) 1;
+    }
     @media (max-width: 500px) {
       .game-container { min-width: 90vw; padding: 1em;}
       .choices { gap: 1em;}
@@ -183,9 +201,13 @@
       <div class="score" id="computer-score">Computer: 0</div>
     </div>
     <div class="choices-visual">
-      <div class="visual" id="player-choice-visual"></div>
+      <div class="visual" id="player-choice-visual">
+        <img id="default-rock" src="Asset/Rock.png" alt="Rock" style="width:60px;height:60px;">
+      </div>
       <div class="vs">VS</div>
-      <div class="visual" id="computer-choice-visual"></div>
+      <div class="visual" id="computer-choice-visual">
+        <img id="default-rock-computer" src="Asset/Rock.png" alt="Rock" style="width:60px;height:60px;">
+      </div>
     </div>
     <div class="result" id="result"></div>
     <div class="choices">
@@ -203,7 +225,6 @@
   </div>
   <script>
     const choices = ['rock', 'paper', 'scissors'];
-    // Use images instead of emojis
     const images = {
       rock: 'Asset/Rock.png',
       paper: 'Asset/Paper.png',
@@ -238,35 +259,41 @@
       el.classList.add('animate');
     }
 
-    function showResult(result, player, computer) {
-      // Show images instead of emojis
-      playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}" style="width:60px;height:60px;">`;
-      computerVisual.innerHTML = `<img src="${images[computer]}" alt="${computer}" style="width:60px;height:60px;">`;
-      animateVisual(playerVisual);
-      animateVisual(computerVisual);
+    // Animate the default rock image up and down 3 times, then show the selected choice
+    function bounceRockThenShow(player, computer, result) {
+      playerVisual.innerHTML = `<img id="bouncing-rock" src="${images.rock}" alt="Rock" style="width:60px;height:60px;">`;
+      const rockImg = document.getElementById('bouncing-rock');
+      rockImg.classList.add('bouncing');
+      setTimeout(() => {
+        // After bounce, show the selected choice
+        playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}" style="width:60px;height:60px;">`;
+        computerVisual.innerHTML = `<img src="${images[computer]}" alt="${computer}" style="width:60px;height:60px;">`;
+        animateVisual(playerVisual);
+        animateVisual(computerVisual);
 
-      if (result === 'win') {
-        resultEl.textContent = 'You Win! 🎉';
-        resultEl.style.color = '#43cea2';
-        playerScore++;
-      } else if (result === 'lose') {
-        resultEl.textContent = 'You Lose! 😢';
-        resultEl.style.color = '#ff7675';
-        computerScore++;
-      } else {
-        resultEl.textContent = "It's a Draw! 🤝";
-        resultEl.style.color = '#f6e58d';
-      }
-      playerScoreEl.textContent = `You: ${playerScore}`;
-      computerScoreEl.textContent = `Computer: ${computerScore}`;
-      playAgainBtn.style.display = 'inline-block';
-      choiceBtns.forEach(btn => btn.disabled = true);
+        if (result === 'win') {
+          resultEl.textContent = 'You Win! 🎉';
+          resultEl.style.color = '#43cea2';
+          playerScore++;
+        } else if (result === 'lose') {
+          resultEl.textContent = 'You Lose! 😢';
+          resultEl.style.color = '#ff7675';
+          computerScore++;
+        } else {
+          resultEl.textContent = "It's a Draw! 🤝";
+          resultEl.style.color = '#f6e58d';
+        }
+        playerScoreEl.textContent = `You: ${playerScore}`;
+        computerScoreEl.textContent = `Computer: ${computerScore}`;
+        playAgainBtn.style.display = 'inline-block';
+        choiceBtns.forEach(btn => btn.disabled = true);
+      }, 900); // match animation duration
     }
 
     function resetGame() {
       resultEl.textContent = '';
-      playerVisual.innerHTML = '';
-      computerVisual.innerHTML = '';
+      playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock" style="width:60px;height:60px;">`;
+      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock" style="width:60px;height:60px;">`;
       playAgainBtn.style.display = 'none';
       choiceBtns.forEach(btn => btn.disabled = false);
     }
@@ -276,7 +303,7 @@
         const playerChoice = btn.getAttribute('data-choice');
         const computerChoice = getComputerChoice();
         const result = getResult(playerChoice, computerChoice);
-        showResult(result, playerChoice, computerChoice);
+        bounceRockThenShow(playerChoice, computerChoice, result);
       });
     });
 
