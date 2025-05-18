@@ -316,19 +316,20 @@
         playAgainBtn.style.display = 'inline-block';
         choiceBtns.forEach(btn => btn.disabled = true);
 
-        // Show final result at the bottom   // Show final result at the bottom
-        document.getElementById('final-result').textContent = resultEl.textContent;        document.getElementById('final-result').textContent = resultEl.textContent;
-        document.getElementById('final-result').style.color = resultEl.style.color;tById('final-result').style.color = resultEl.style.color;
-      }, 900); // match animation durationn duration
+        // Show final result at the bottom
+        document.getElementById('final-result').textContent = resultEl.textContent;
+        document.getElementById('final-result').style.color = resultEl.style.color;
+      }, 900); // match animation duration
     }
 
     function resetGame() {
       resultEl.textContent = '';
-      playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`; playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`;
-      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
-      playAgainBtn.style.display = 'none';y = 'none';
-      choiceBtns.forEach(btn => btn.disabled = false);d = false);
-      document.getElementById('final-result').textContent = '';';
+      playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`;
+      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
+      playAgainBtn.style.display = 'none';
+      choiceBtns.forEach(btn => btn.disabled = false);
+      document.getElementById('final-result').textContent = '';
+    }
 
     choiceBtns.forEach(btn => {
       btn.addEventListener('click', () => {
