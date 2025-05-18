@@ -316,33 +316,40 @@
       line-height: 1;
     }
     .big-title-rock {
-      left: -2vw;
+      position: absolute;
+      left: 0;
       top: 50%;
       transform: translateY(-50%) rotate(-90deg);
+      font-size: 8vw;
+      z-index: 0;
     }
     .big-title-paper {
-      right: -2vw;
+      position: absolute;
+      right: 0;
       top: 50%;
       transform: translateY(-50%) rotate(90deg);
       text-align: right;
+      font-size: 8vw;
+      z-index: 0;
     }
     .big-title-scissors {
+      position: absolute;
       left: 50%;
-      bottom: -3vw;
+      bottom: 0;
       transform: translateX(-50%);
-      font-size: 8vw;
+      font-size: 7vw;
       letter-spacing: 0.2em;
+      z-index: 0;
     }
 
   </style>
 </head>
 <body>
-  <!-- Place these titles and gif outside the .game-container as shown below -->
-  <h1>Rock Paper Scissors</h1>
-  <div class="big-title big-title-rock">ROCK</div>
-  <div class="big-title big-title-paper">PAPER</div>
-  <div class="big-title big-title-scissors">SCISSORS</div>
   <div class="game-container">
+    <!-- Move the big titles inside .game-container, just after opening <div class="game-container"> -->
+    <div class="big-title big-title-rock">ROCK</div>
+    <div class="big-title big-title-paper">PAPER</div>
+    <div class="big-title big-title-scissors">SCISSORS</div>
     <div class="scoreboard">
       <div class="score" id="player-score">You: 0</div>
       <div class="score" id="computer-score">Computer: 0</div>
