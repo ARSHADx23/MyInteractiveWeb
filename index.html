@@ -468,11 +468,6 @@
         playAgainBtn.style.display = 'inline-block';
         choiceBtns.forEach(btn => btn.disabled = true);
 
-        // Show result in mini container at the bottom of the game container
-        const miniResult = document.getElementById('mini-result');
-        miniResult.textContent = resultText;
-        miniResult.className = resultClass;
-
         // Show result at the bottom of the page, outside the container
         const finalResult = document.getElementById('final-result');
         finalResult.textContent = resultText;
