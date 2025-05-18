@@ -188,6 +188,37 @@
         opacity 0.5s cubic-bezier(.68,-0.55,.27,1.55),
         transform 0.5s cubic-bezier(.68,-0.55,.27,1.55),
         background 0.4s, color 0.4s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5em;
+      flex-wrap: wrap;
+    }
+    #final-result span {
+      display: inline-block;
+      font-size: 1.1em;
+    }
+    #final-result .notif-play-again {
+      display: none;
+      margin: 0;
+      font-size: 1em;
+      color: #111;
+      background: none;
+      border: none;
+      border-bottom: 2px solid #111;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: underline;
+      transition: color 0.3s, border-color 0.3s, opacity 0.4s;
+      opacity: 0;
+      outline: none;
+      vertical-align: middle;
+    }
+    #final-result .notif-play-again.show {
+      display: inline-block;
+      opacity: 1;
+      animation: fadeInNotifBtn 0.5s;
+      margin-left: 1em;
     }
     #final-result.show {
       opacity: 1;
@@ -554,6 +585,7 @@
           playerScore++;
           document.getElementById('winning-popup').style.display = 'block';
           document.getElementById('play-again').style.display = 'none';
+          document.getElementById('play-again').style.display = 'none';
         } else {
           document.getElementById('winning-popup').style.display = 'none';
           if (result === 'lose') {
@@ -564,38 +596,34 @@
             resultText = "It's a Draw! 🤝";
             resultClass = 'draw';
           }
-          document.getElementById('play-again').style.display = 'inline-block';
+          choiceBtns.forEach(btn => {
+            btn.disabled = false;
+          });
+
+          // Show result at the bottom of the page, outside the container
+          const finalResult = document.getElementById('final-result');
+          finalResult.innerHTML = `
+            <span>${resultText}</span>
+            <button class="notif-play-again" id="notif-play-again">Play Again</button>
+          `;
+          finalResult.className = `show ${resultClass}`;
+
+          // Show the play again button after 1s with animation
+          setTimeout(() => {
+            const notifBtn = document.getElementById('notif-play-again');
+            if (notifBtn) notifBtn.classList.add('show');
+          }, 1000);
+
+          // Add event listener for notification play again button
+          setTimeout(() => {
+            const notifBtn = document.getElementById('notif-play-again');
+            if (notifBtn) {
+              notifBtn.onclick = resetGame;
+            }
+          }, 1000);
         }
-        playerScoreEl.textContent = `You: ${playerScore}`;
-        computerScoreEl.textContent = `Computer: ${computerScore}`;
-        choiceBtns.forEach(btn => btn.disabled = true);
-
-        // Show result at the bottom of the page, outside the container
-        const finalResult = document.getElementById('final-result');
-        finalResult.innerHTML = `
-          <span>${resultText}</span>
-          <br>
-          <button class="notif-play-again" id="notif-play-again">Play Again</button>
-        `;
-        finalResult.className = `show ${resultClass}`;
-
-        // Show the play again button after 1s with animation
-        setTimeout(() => {
-          const notifBtn = document.getElementById('notif-play-again');
-          if (notifBtn) notifBtn.classList.add('show');
-        }, 1000);
-
-        // Add event listener for notification play again button
-        setTimeout(() => {
-          const notifBtn = document.getElementById('notif-play-again');
-          if (notifBtn) {
-            notifBtn.onclick = resetGame;
-          }
-        }, 1000);
-
       }, 900);
     }
-
     function resetGame() {
       playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`;
       computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
