@@ -224,15 +224,80 @@
     }
 
     /* Add to your CSS (already present in your file, just ensure this is included) */
+    /* Remove box-shadow from gif if present */
     #winning-gif {
       transition: opacity 0.7s cubic-bezier(.68,-0.55,.27,1.55), transform 0.7s cubic-bezier(.68,-0.55,.27,1.55);
       opacity: 0;
       transform: scale(0.95);
+      box-shadow: none !important;
     }
     #winning-gif.show {
       display: block;
       opacity: 1;
       transform: scale(1.05);
+    }
+
+    /* Mini result container always at bottom of .game-container */
+    #mini-result {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0 auto 1.2em auto;
+      width: 80%;
+      min-height: 2.5em;
+      background: #fff9;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #0002;
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background 0.4s, color 0.4s;
+    }
+    #mini-result.win {
+      background: linear-gradient(90deg, #43cea2cc, #185a9dcc);
+      color: #fff;
+    }
+    #mini-result.lose {
+      background: linear-gradient(90deg, #ff7675cc, #d72660cc);
+      color: #fff;
+    }
+    #mini-result.draw {
+      background: linear-gradient(90deg, #f6e58dcc, #fffde4cc);
+      color: #222;
+    }
+    /* Make the restart (play again) button aesthetic */
+    .play-again {
+      margin-top: 2em;
+      padding: 0.8em 2.2em;
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+      border: none;
+      border-radius: 2em;
+      box-shadow: 0 4px 24px #185a9d44;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: 
+        background 0.3s,
+        transform 0.2s,
+        box-shadow 0.3s,
+        color 0.3s;
+      outline: none;
+      display: inline-block;
+    }
+    .play-again:hover, .play-again:focus {
+      background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+      color: #fff;
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 8px 32px #185a9d66;
     }
   </style>
 </head>
@@ -246,11 +311,9 @@
     <div class="choices-visual">
       <div class="visual" id="player-choice-visual">
         <img id="default-rock" src="Asset/Rock.png" alt="Rock" style="width:170px;height:170px;">
-        <span class="direction direction-right">→</span>
       </div>
       <div class="vs">VS</div>
       <div class="visual" id="computer-choice-visual">
-        <span class="direction direction-left">←</span>
         <img id="default-rock-computer" src="Asset/Rock.png" alt="Rock" style="width:170px;height:170px;">
       </div>
     </div>
@@ -266,8 +329,9 @@
       </button>
     </div>
     <button class="play-again" id="play-again" style="display:none;">Play Again</button>
+    <div id="mini-result"></div>
   </div>
-  <img id="winning-gif" src="Asset/winning_annoucement.gif" alt="Winning Announcement" style="display:none; margin: 2em auto 0 auto; max-width: 320px; width: 100%; border-radius: 18px; box-shadow: 0 4px 32px #43cea288;">
+  <img id="winning-gif" src="Asset/winning_annoucement.gif" alt="Winning Announcement" style="display:none; margin: 2em auto 0 auto; max-width: 320px; width: 100%; border-radius: 18px;">
   <div id="final-result"></div>
   <script>
     const choices = ['rock', 'paper', 'scissors'];
@@ -307,14 +371,14 @@
 
     // Animate the default rock image up and down 3 times, then show the selected choice
     function bounceRockThenShow(player, computer, result) {
-      playerVisual.innerHTML = `<img id="bouncing-rock" src="${images.rock}" alt="Rock"><span class="direction direction-right">→</span>`;
-      computerVisual.innerHTML = `<span class="direction direction-left">←</span><img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
+      playerVisual.innerHTML = `<img id="bouncing-rock" src="${images.rock}" alt="Rock">`;
+      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
       const rockImg = document.getElementById('bouncing-rock');
       rockImg.classList.add('bouncing');
       setTimeout(() => {
         // After bounce, show the selected choice
-        playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}"><span class="direction direction-right">→</span>`;
-        computerVisual.innerHTML = `<span class="direction direction-left">←</span><img src="${images[computer]}" alt="${computer}">`;
+        playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}">`;
+        computerVisual.innerHTML = `<img src="${images[computer]}" alt="${computer}">`;
         animateVisual(playerVisual);
         animateVisual(computerVisual);
 
@@ -343,16 +407,16 @@
         playAgainBtn.style.display = 'inline-block';
         choiceBtns.forEach(btn => btn.disabled = true);
 
-        // Show final result at the bottom with animation and transitions
-        const finalResult = document.getElementById('final-result');
-        finalResult.textContent = resultText;
-        finalResult.className = `show ${resultClass}`;
+        // Show result in mini container at the bottom of the game container
+        const miniResult = document.getElementById('mini-result');
+        miniResult.textContent = resultText;
+        miniResult.className = resultClass;
       }, 900); // match animation duration
     }
 
     function resetGame() {
-      playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock"><span class="direction direction-right">→</span>`;
-      computerVisual.innerHTML = `<span class="direction direction-left">←</span><img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
+      playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`;
+      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
       playAgainBtn.style.display = 'none';
       choiceBtns.forEach(btn => btn.disabled = false);
       const finalResult = document.getElementById('final-result');
@@ -361,6 +425,10 @@
       resultEl.textContent = '';
       document.getElementById('winning-gif').classList.remove('show');
       document.getElementById('winning-gif').style.display = 'none';
+      // Hide mini result on reset
+      const miniResult = document.getElementById('mini-result');
+      miniResult.textContent = '';
+      miniResult.className = '';
     }
 
     choiceBtns.forEach(btn => {
