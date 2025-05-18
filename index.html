@@ -40,6 +40,7 @@
       backdrop-filter: blur(32px) saturate(180%);
       position: relative;
       overflow: hidden;
+      z-index: 1;
     }
     .game-container::before {
       content: "";
@@ -47,10 +48,9 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background: 
-        url('https://www.transparenttextures.com/patterns/noise.png'),
-        linear-gradient(120deg, #ffb6d5cc 0%, #b2d7ffcc 50%, #43cea2cc 100%);
-      opacity: 0.28;
+      background: url('Asset/vecteezy_grainy-texture-for-any-of-the-gradients.png') center/cover no-repeat;
+      opacity: 0.45;
+      filter: blur(8px);
       border-radius: 32px;
     }
     @keyframes fadeInUp {
@@ -162,7 +162,7 @@
       text-shadow: 0 2px 8px #0002;
     }
     #final-result {
-      margin-top: 3em;
+      margin: 3em auto 2em auto;
       font-size: 2em;
       font-weight: bold;
       color: #222;
@@ -299,6 +299,20 @@
       transform: scale(1.08) translateY(-2px);
       box-shadow: 0 8px 32px #185a9d66;
     }
+
+    /* Add this to your CSS for the bounce animation */
+    @keyframes bounce {
+      0%   { transform: translateY(0);}
+      16%  { transform: translateY(-30px);}
+      33%  { transform: translateY(0);}
+      50%  { transform: translateY(-20px);}
+      66%  { transform: translateY(0);}
+      83%  { transform: translateY(-10px);}
+      100% { transform: translateY(0);}
+    }
+    .bouncing {
+      animation: bounce 0.9s cubic-bezier(.68,-0.55,.27,1.55) 1;
+    }
   </style>
 </head>
 <body>
@@ -330,7 +344,7 @@
     </div>
     <button class="play-again" id="play-again" style="display:none;">Play Again</button>
     <div id="mini-result"></div>
-  </div>
+  </div> <!-- end of .game-container -->
   <img id="winning-gif" src="Asset/winning_annoucement.gif" alt="Winning Announcement" style="display:none; margin: 2em auto 0 auto; max-width: 320px; width: 100%; border-radius: 18px;">
   <div id="final-result"></div>
   <script>
@@ -372,7 +386,6 @@
     // Animate the default rock image up and down 3 times, then show the selected choice
     function bounceRockThenShow(player, computer, result) {
       playerVisual.innerHTML = `<img id="bouncing-rock" src="${images.rock}" alt="Rock">`;
-      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
       const rockImg = document.getElementById('bouncing-rock');
       rockImg.classList.add('bouncing');
       setTimeout(() => {
@@ -411,6 +424,11 @@
         const miniResult = document.getElementById('mini-result');
         miniResult.textContent = resultText;
         miniResult.className = resultClass;
+
+        // Show result at the bottom of the page, outside the container
+        const finalResult = document.getElementById('final-result');
+        finalResult.textContent = resultText;
+        finalResult.className = `show ${resultClass}`;
       }, 900); // match animation duration
     }
 
