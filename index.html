@@ -162,18 +162,19 @@
       text-shadow: 0 2px 8px #0002;
     }
     #final-result {
-      margin: 3em auto 2em auto;
-      font-size: 2em;
+      margin: 2em auto 2em auto;
+      font-size: 2.5em;
       font-weight: bold;
       color: #222;
       text-align: center;
       min-height: 2.5em;
       text-shadow: 0 2px 8px #fff8, 0 1px 0 #43cea2;
       opacity: 0;
-      transform: translateY(40px) scale(0.95);
+      background: none !important;
+      box-shadow: none !important;
+      letter-spacing: 2px;
       transition: 
         color 0.4s,
-        background 0.4s,
         opacity 0.6s cubic-bezier(.68,-0.55,.27,1.55),
         transform 0.6s cubic-bezier(.68,-0.55,.27,1.55);
     }
@@ -182,22 +183,13 @@
       transform: translateY(0) scale(1.05);
     }
     #final-result.win {
-      color: #fff;
-      background: linear-gradient(90deg, #43cea2, #185a9d);
-      box-shadow: 0 4px 32px #43cea288;
-      letter-spacing: 2px;
+      color: #43cea2;
     }
     #final-result.lose {
-      color: #fff;
-      background: linear-gradient(90deg, #ff7675, #d72660);
-      box-shadow: 0 4px 32px #ff767588;
-      letter-spacing: 2px;
+      color: #d72660;
     }
     #final-result.draw {
-      color: #222;
-      background: linear-gradient(90deg, #f6e58d, #fffde4);
-      box-shadow: 0 4px 32px #f6e58d88;
-      letter-spacing: 2px;
+      color: #f6e58d;
     }
     @media (max-width: 500px) {
       .game-container { min-width: 90vw; padding: 1em;}
@@ -313,10 +305,48 @@
     .bouncing {
       animation: bounce 0.9s cubic-bezier(.68,-0.55,.27,1.55) 1;
     }
+
+    /* New styles for big titles */
+    .big-title {
+      position: fixed;
+      font-size: 9vw;
+      font-weight: 900;
+      color: #2222;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .big-title-rock {
+      left: -2vw;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+    }
+    .big-title-paper {
+      right: -2vw;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      text-align: right;
+    }
+    .big-title-scissors {
+      left: 50%;
+      bottom: -3vw;
+      transform: translateX(-50%);
+      font-size: 8vw;
+      letter-spacing: 0.2em;
+    }
+
   </style>
 </head>
 <body>
+  <!-- Place these titles and gif outside the .game-container as shown below -->
   <h1>Rock Paper Scissors</h1>
+  <div class="big-title big-title-rock">ROCK</div>
+  <div class="big-title big-title-paper">PAPER</div>
+  <div class="big-title big-title-scissors">SCISSORS</div>
   <div class="game-container">
     <div class="scoreboard">
       <div class="score" id="player-score">You: 0</div>
@@ -386,8 +416,11 @@
     // Animate the default rock image up and down 3 times, then show the selected choice
     function bounceRockThenShow(player, computer, result) {
       playerVisual.innerHTML = `<img id="bouncing-rock" src="${images.rock}" alt="Rock">`;
+      computerVisual.innerHTML = `<img id="bouncing-rock-computer" src="${images.rock}" alt="Rock">`;
       const rockImg = document.getElementById('bouncing-rock');
+      const rockImgComp = document.getElementById('bouncing-rock-computer');
       rockImg.classList.add('bouncing');
+      rockImgComp.classList.add('bouncing');
       setTimeout(() => {
         // After bounce, show the selected choice
         playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}">`;
