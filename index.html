@@ -28,6 +28,8 @@
       to { opacity: 1; transform: translateY(0);}
     }
     .game-container {
+      position: relative;
+      z-index: 1;
       background: linear-gradient(120deg, #ffb6d5 0%, #b2d7ff 50%, #43cea2 100%);
       border-radius: 32px;
       box-shadow: 0 8px 32px #0003;
@@ -37,10 +39,11 @@
       align-items: center;
       min-width: 340px;
       animation: fadeInUp 1s;
-      backdrop-filter: blur(32px) saturate(180%);
-      position: relative;
+      /* Glassmorphism effect */
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background-clip: padding-box;
       overflow: hidden;
-      z-index: 1;
     }
     .game-container::before {
       content: "";
@@ -48,9 +51,9 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background: url('Asset/vecteezy_grainy-texture-for-any-of-the-gradients.png') center/cover no-repeat;
-      opacity: 0.45;
-      filter: blur(8px);
+      background: url('Asset/vecteezy_grainy-texture-for-any-of-the-gradients.jpg') center/cover no-repeat;
+      opacity: 0.55;
+      filter: blur(8px) brightness(1.1) saturate(1.2);
       border-radius: 32px;
     }
     @keyframes fadeInUp {
