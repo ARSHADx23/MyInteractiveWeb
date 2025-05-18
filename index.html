@@ -343,9 +343,83 @@
       letter-spacing: 0.2em;
     }
 
+    /* Add this just inside <body>, before .game-container */
+    .big-title-row {
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2vw;
+      position: absolute;
+      top: 2vw;
+      left: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .big-title-top {
+      font-size: 6vw;
+      font-weight: 900;
+      color: #2222;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      user-select: none;
+      white-space: nowrap;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    #play-again {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%) translateX(2em);
+      margin: 0;
+      z-index: 20;
+    }
+    @media (max-width: 900px) {
+      #play-again {
+        position: static;
+        transform: none;
+        margin: 2em auto 0 auto;
+        display: block;
+      }
+    }
+
+    /* Add this for the winning popup */
+    #winning-popup {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 2000;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.85);
+      border-radius: 2em;
+      box-shadow: 0 8px 32px #0005;
+      padding: 2em 2em 1.5em 2em;
+      text-align: center;
+      animation: fadeInUp 0.7s;
+    }
+    #winning-popup img {
+      max-width: 320px;
+      width: 100%;
+      border-radius: 18px;
+      margin-bottom: 1.5em;
+    }
+    #winning-popup .play-again {
+      margin: 0;
+      position: static;
+      transform: none;
+    }
   </style>
 </head>
 <body>
+  <!-- Add this just inside <body>, before .game-container -->
+  <div class="big-title-row">
+    <span class="big-title-top">ROCK</span>
+    <span class="big-title-top">PAPER</span>
+    <span class="big-title-top">SCISSORS</span>
+  </div>
   <div class="game-container">
     <!-- Move the big titles inside .game-container, just after opening <div class="game-container"> -->
     <div class="big-title big-title-rock">ROCK</div>
@@ -377,9 +451,12 @@
     </div>
     <div id="mini-result"></div>
   </div> <!-- end of .game-container -->
-  <!-- Move these below the container -->
   <button class="play-again" id="play-again" style="display:none;">Play Again</button>
-  <img id="winning-gif" src="Asset/winning_annoucement.gif" alt="Winning Announcement" style="display:none; margin: 2em auto 0 auto; max-width: 320px; width: 100%; border-radius: 18px;">
+  <!-- Move these below the container -->
+  <div id="winning-popup">
+    <img src="Asset/winning_annoucement.gif" alt="Winning Announcement">
+    <button id="popup-play-again" class="play-again">Play Again</button>
+  </div>
   <div id="final-result"></div>
   <script>
     const choices = ['rock', 'paper', 'scissors'];
@@ -396,6 +473,8 @@
     const computerVisual = document.getElementById('computer-choice-visual');
     const playAgainBtn = document.getElementById('play-again');
     const choiceBtns = document.querySelectorAll('.choice-btn');
+    const winningPopup = document.getElementById('winning-popup');
+    const popupPlayAgainBtn = document.getElementById('popup-play-again');
 
     function getComputerChoice() {
       return choices[Math.floor(Math.random() * 3)];
@@ -426,7 +505,6 @@
       rockImg.classList.add('bouncing');
       rockImgComp.classList.add('bouncing');
       setTimeout(() => {
-        // After bounce, show the selected choice
         playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}">`;
         computerVisual.innerHTML = `<img src="${images[computer]}" alt="${computer}">`;
         animateVisual(playerVisual);
@@ -438,11 +516,11 @@
           resultText = 'You Win! 🎉';
           resultClass = 'win';
           playerScore++;
-          document.getElementById('winning-gif').style.display = 'block';
-          setTimeout(() => document.getElementById('winning-gif').classList.add('show'), 10);
+          // Show popup
+          document.getElementById('winning-popup').style.display = 'block';
+          document.getElementById('play-again').style.display = 'none';
         } else {
-          document.getElementById('winning-gif').classList.remove('show');
-          setTimeout(() => document.getElementById('winning-gif').style.display = 'none', 700);
+          document.getElementById('winning-popup').style.display = 'none';
           if (result === 'lose') {
             resultText = 'You Lose! 😢';
             resultClass = 'lose';
@@ -451,36 +529,29 @@
             resultText = "It's a Draw! 🤝";
             resultClass = 'draw';
           }
+          document.getElementById('play-again').style.display = 'inline-block';
         }
         playerScoreEl.textContent = `You: ${playerScore}`;
         computerScoreEl.textContent = `Computer: ${computerScore}`;
-        playAgainBtn.style.display = 'inline-block';
         choiceBtns.forEach(btn => btn.disabled = true);
 
         // Show result at the bottom of the page, outside the container
         const finalResult = document.getElementById('final-result');
         finalResult.textContent = resultText;
         finalResult.className = `show ${resultClass}`;
-      }, 900); // match animation duration
+      }, 900);
     }
 
     function resetGame() {
       playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`;
       computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
-      playAgainBtn.style.display = 'none';
+      document.getElementById('play-again').style.display = 'none';
+      document.getElementById('winning-popup').style.display = 'none';
       choiceBtns.forEach(btn => btn.disabled = false);
       const finalResult = document.getElementById('final-result');
       finalResult.textContent = '';
       finalResult.className = '';
       resultEl.textContent = '';
-      // Instantly hide the gif
-      const gif = document.getElementById('winning-gif');
-      gif.classList.remove('show');
-      gif.style.display = 'none';
-      // Hide mini result on reset
-      const miniResult = document.getElementById('mini-result');
-      miniResult.textContent = '';
-      miniResult.className = '';
     }
 
     choiceBtns.forEach(btn => {
@@ -493,6 +564,10 @@
     });
 
     playAgainBtn.addEventListener('click', resetGame);
+    popupPlayAgainBtn.addEventListener('click', () => {
+      resetGame();
+      winningPopup.classList.remove('show');
+    });
 
     // Initial state
     resetGame();
