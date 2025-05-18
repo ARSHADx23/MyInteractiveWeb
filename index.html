@@ -30,7 +30,7 @@
       flex-direction: column;
       align-items: center;
       min-width: 340px;
-      animation: fadeInUp 1s;
+      opacity: 1; /* Ensure it's visible */
       /* Glassmorphism effect */
       backdrop-filter: blur(24px) saturate(180%);
       -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -51,6 +51,13 @@
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(40px);}
       to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeInOpacity {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .game-container {
+      animation: fadeInOpacity 0.7s;
     }
     .choices {
       display: flex;
@@ -398,7 +405,7 @@
       box-shadow: 0 8px 32px #0005;
       padding: 2em 2em 1.5em 2em;
       text-align: center;
-      animation: fadeInUp 0.7s;
+      animation: fadeInOpacity 0.7s;
     }
     #winning-popup img {
       max-width: 320px;
