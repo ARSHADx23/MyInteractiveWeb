@@ -161,35 +161,46 @@
       color: #185a9d;
       text-shadow: 0 2px 8px #0002;
     }
+    /* Add to your CSS for iPhone-like notification style */
     #final-result {
-      margin: 2em auto 2em auto;
-      font-size: 2.5em;
-      font-weight: bold;
+      position: fixed;
+      left: 50%;
+      bottom: 3em;
+      transform: translateX(-50%) translateY(60px) scale(0.98);
+      min-width: 260px;
+      max-width: 90vw;
+      padding: 1.1em 2.2em;
+      border-radius: 2em;
+      font-size: 1.4em;
+      font-weight: 600;
+      box-shadow: 0 8px 32px #0003, 0 1.5px 8px #fff8;
+      background: rgba(255,255,255,0.85);
       color: #222;
       text-align: center;
-      min-height: 2.5em;
-      text-shadow: 0 2px 8px #fff8, 0 1px 0 #43cea2;
+      letter-spacing: 1px;
       opacity: 0;
-      background: none !important;
-      box-shadow: none !important;
-      letter-spacing: 2px;
-      transition: 
-        color 0.4s,
-        opacity 0.6s cubic-bezier(.68,-0.55,.27,1.55),
-        transform 0.6s cubic-bezier(.68,-0.55,.27,1.55);
+      pointer-events: none;
+      z-index: 1000;
+      transition:
+        opacity 0.5s cubic-bezier(.68,-0.55,.27,1.55),
+        transform 0.5s cubic-bezier(.68,-0.55,.27,1.55),
+        background 0.4s, color 0.4s;
     }
     #final-result.show {
       opacity: 1;
-      transform: translateY(0) scale(1.05);
+      transform: translateX(-50%) translateY(0) scale(1.03);
     }
     #final-result.win {
-      color: #43cea2;
+      background: linear-gradient(90deg, #43cea2cc, #185a9dcc);
+      color: #fff;
     }
     #final-result.lose {
-      color: #d72660;
+      background: linear-gradient(90deg, #ff7675cc, #d72660cc);
+      color: #fff;
     }
     #final-result.draw {
-      color: #f6e58d;
+      background: linear-gradient(90deg, #f6e58dcc, #fffde4cc);
+      color: #222;
     }
     @media (max-width: 500px) {
       .game-container { min-width: 90vw; padding: 1em;}
@@ -473,7 +484,10 @@
       finalResult.textContent = '';
       finalResult.className = '';
       resultEl.textContent = '';
-      document.getElementById('winning-gif').classList.remove('show');
+      // Instantly hide the gif
+      const gif = document.getElementById('winning-gif');
+      gif.classList.remove('show');
+      gif.style.display = 'none';
       // Hide mini result on reset
       const miniResult = document.getElementById('mini-result');
       miniResult.textContent = '';
