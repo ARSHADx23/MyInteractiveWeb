@@ -107,14 +107,6 @@
       filter: brightness(1.08);
       z-index: 2;
     }
-    .result {
-      margin: 1.5em 0 0.5em 0;
-      font-size: 1.7em;
-      min-height: 2em;
-      letter-spacing: 1px;
-      transition: color 0.4s;
-      text-align: center;
-    }
     .scoreboard {
       display: flex;
       gap: 2em;
@@ -139,6 +131,7 @@
       min-height: 60px;
     }
     .visual {
+      position: relative;
       font-size: 2.5em;
       min-width: 60px;
       min-height: 60px;
@@ -148,43 +141,63 @@
       opacity: 0.8;
       transition: transform 0.4s cubic-bezier(.68,-0.55,.27,1.55), opacity 0.4s;
     }
-    .visual.animate {
-      transform: scale(1.4) rotate(-10deg);
-      opacity: 1;
-    }
-    .vs {
-      font-size: 1.5em;
+    .direction {
+      position: absolute;
+      font-size: 2.5em;
+      top: 50%;
+      transform: translateY(-50%);
       opacity: 0.7;
-      margin: 0 0.5em;
+      pointer-events: none;
+      user-select: none;
+      transition: color 0.3s;
     }
-    .play-again {
-      margin-top: 1em;
-      background: linear-gradient(90deg, #43cea2, #185a9d);
+    .direction-right {
+      right: -2.2em;
+      color: #43cea2;
+      text-shadow: 0 2px 8px #0002;
+    }
+    .direction-left {
+      left: -2.2em;
+      color: #185a9d;
+      text-shadow: 0 2px 8px #0002;
+    }
+    #final-result {
+      margin-top: 3em;
+      font-size: 2em;
+      font-weight: bold;
+      color: #222;
+      text-align: center;
+      min-height: 2.5em;
+      text-shadow: 0 2px 8px #fff8, 0 1px 0 #43cea2;
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      transition: 
+        color 0.4s,
+        background 0.4s,
+        opacity 0.6s cubic-bezier(.68,-0.55,.27,1.55),
+        transform 0.6s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    #final-result.show {
+      opacity: 1;
+      transform: translateY(0) scale(1.05);
+    }
+    #final-result.win {
       color: #fff;
-      border: none;
-      border-radius: 18px;
-      padding: 0.7em 2em;
-      font-size: 1.1em;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #0002;
-      transition: background 0.3s, transform 0.2s;
-      outline: none;
+      background: linear-gradient(90deg, #43cea2, #185a9d);
+      box-shadow: 0 4px 32px #43cea288;
+      letter-spacing: 2px;
     }
-    .play-again:hover {
-      background: linear-gradient(90deg, #185a9d, #43cea2);
-      transform: scale(1.05);
+    #final-result.lose {
+      color: #fff;
+      background: linear-gradient(90deg, #ff7675, #d72660);
+      box-shadow: 0 4px 32px #ff767588;
+      letter-spacing: 2px;
     }
-    @keyframes bounce {
-      0%   { transform: translateY(0);}
-      16%  { transform: translateY(-30px);}
-      33%  { transform: translateY(0);}
-      50%  { transform: translateY(-20px);}
-      66%  { transform: translateY(0);}
-      83%  { transform: translateY(-10px);}
-      100% { transform: translateY(0);}
-    }
-    .bouncing {
-      animation: bounce 0.9s cubic-bezier(.68,-0.55,.27,1.55) 1;
+    #final-result.draw {
+      color: #222;
+      background: linear-gradient(90deg, #f6e58d, #fffde4);
+      box-shadow: 0 4px 32px #f6e58d88;
+      letter-spacing: 2px;
     }
     @media (max-width: 500px) {
       .game-container { min-width: 90vw; padding: 1em;}
@@ -210,13 +223,16 @@
       margin: 0 auto;
     }
 
-    #final-result {
-      margin-top: 3em;
-      font-size: 2em;
-      font-weight: bold;
-      color: #222;
-      text-align: center;
-      text-shadow: 0 2px 8px #fff8, 0 1px 0 #43cea2;
+    /* Add to your CSS (already present in your file, just ensure this is included) */
+    #winning-gif {
+      transition: opacity 0.7s cubic-bezier(.68,-0.55,.27,1.55), transform 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    #winning-gif.show {
+      display: block;
+      opacity: 1;
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -229,14 +245,15 @@
     </div>
     <div class="choices-visual">
       <div class="visual" id="player-choice-visual">
-        <img id="default-rock" src="Asset/Rock.png" alt="Rock" style="width:60px;height:60px;">
+        <img id="default-rock" src="Asset/Rock.png" alt="Rock" style="width:170px;height:170px;">
+        <span class="direction direction-right">→</span>
       </div>
       <div class="vs">VS</div>
       <div class="visual" id="computer-choice-visual">
-        <img id="default-rock-computer" src="Asset/Rock.png" alt="Rock" style="width:60px;height:60px;">
+        <span class="direction direction-left">←</span>
+        <img id="default-rock-computer" src="Asset/Rock.png" alt="Rock" style="width:170px;height:170px;">
       </div>
     </div>
-    <div class="result" id="result"></div>
     <div class="choices">
       <button class="choice-btn pink" data-choice="rock" title="Rock">
         <img src="Asset/Rock.png" alt="Rock" style="width:60px;height:60px;">
@@ -250,6 +267,7 @@
     </div>
     <button class="play-again" id="play-again" style="display:none;">Play Again</button>
   </div>
+  <img id="winning-gif" src="Asset/winning_annoucement.gif" alt="Winning Announcement" style="display:none; margin: 2em auto 0 auto; max-width: 320px; width: 100%; border-radius: 18px; box-shadow: 0 4px 32px #43cea288;">
   <div id="final-result"></div>
   <script>
     const choices = ['rock', 'paper', 'scissors'];
@@ -289,46 +307,60 @@
 
     // Animate the default rock image up and down 3 times, then show the selected choice
     function bounceRockThenShow(player, computer, result) {
-      playerVisual.innerHTML = `<img id="bouncing-rock" src="${images.rock}" alt="Rock">`;
+      playerVisual.innerHTML = `<img id="bouncing-rock" src="${images.rock}" alt="Rock"><span class="direction direction-right">→</span>`;
+      computerVisual.innerHTML = `<span class="direction direction-left">←</span><img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
       const rockImg = document.getElementById('bouncing-rock');
       rockImg.classList.add('bouncing');
       setTimeout(() => {
         // After bounce, show the selected choice
-        playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}">`;
-        computerVisual.innerHTML = `<img src="${images[computer]}" alt="${computer}">`;
+        playerVisual.innerHTML = `<img src="${images[player]}" alt="${player}"><span class="direction direction-right">→</span>`;
+        computerVisual.innerHTML = `<span class="direction direction-left">←</span><img src="${images[computer]}" alt="${computer}">`;
         animateVisual(playerVisual);
         animateVisual(computerVisual);
 
+        let resultText = '';
+        let resultClass = '';
         if (result === 'win') {
-          resultEl.textContent = 'You Win! 🎉';
-          resultEl.style.color = '#43cea2';
+          resultText = 'You Win! 🎉';
+          resultClass = 'win';
           playerScore++;
-        } else if (result === 'lose') {
-          resultEl.textContent = 'You Lose! 😢';
-          resultEl.style.color = '#ff7675';
-          computerScore++;
+          document.getElementById('winning-gif').style.display = 'block';
+          setTimeout(() => document.getElementById('winning-gif').classList.add('show'), 10);
         } else {
-          resultEl.textContent = "It's a Draw! 🤝";
-          resultEl.style.color = '#f6e58d';
+          document.getElementById('winning-gif').classList.remove('show');
+          setTimeout(() => document.getElementById('winning-gif').style.display = 'none', 700);
+          if (result === 'lose') {
+            resultText = 'You Lose! 😢';
+            resultClass = 'lose';
+            computerScore++;
+          } else {
+            resultText = "It's a Draw! 🤝";
+            resultClass = 'draw';
+          }
         }
         playerScoreEl.textContent = `You: ${playerScore}`;
         computerScoreEl.textContent = `Computer: ${computerScore}`;
         playAgainBtn.style.display = 'inline-block';
         choiceBtns.forEach(btn => btn.disabled = true);
 
-        // Show final result at the bottom
-        document.getElementById('final-result').textContent = resultEl.textContent;
-        document.getElementById('final-result').style.color = resultEl.style.color;
+        // Show final result at the bottom with animation and transitions
+        const finalResult = document.getElementById('final-result');
+        finalResult.textContent = resultText;
+        finalResult.className = `show ${resultClass}`;
       }, 900); // match animation duration
     }
 
     function resetGame() {
-      resultEl.textContent = '';
-      playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`;
-      computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
+      playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock"><span class="direction direction-right">→</span>`;
+      computerVisual.innerHTML = `<span class="direction direction-left">←</span><img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
       playAgainBtn.style.display = 'none';
       choiceBtns.forEach(btn => btn.disabled = false);
-      document.getElementById('final-result').textContent = '';
+      const finalResult = document.getElementById('final-result');
+      finalResult.textContent = '';
+      finalResult.className = '';
+      resultEl.textContent = '';
+      document.getElementById('winning-gif').classList.remove('show');
+      document.getElementById('winning-gif').style.display = 'none';
     }
 
     choiceBtns.forEach(btn => {
