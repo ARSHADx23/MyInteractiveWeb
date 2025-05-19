@@ -422,21 +422,21 @@
       align-items: flex-start;
       gap: 2vw;
       position: absolute;
-      top: 2vw;
       left: 0;
       z-index: 10;
       pointer-events: none;
+      /* Move 10px above the game container */
+      top: calc(50% - (var(--game-container-height, 0px) / 2) - 10px);
+      /* Fallback for browsers that don't support CSS variables: */
+      /* top: calc(50% - 210px - 10px); */
     }
-    .big-title-top {
-      font-size: 6vw;
-      font-weight: 900;
-      color: #2222;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      user-select: none;
-      white-space: nowrap;
-      line-height: 1;
-      pointer-events: none;
+
+    /* Responsive fallback for smaller screens */
+    @media (max-width: 700px) {
+      .big-title-row {
+        font-size: 4vw;
+        top: 1vw;
+      }
     }
 
     #play-again {
@@ -691,6 +691,20 @@
 
     // Initial state
     resetGame();
+
+    // Add this after your DOM is loaded to dynamically set --game-container-height
+    window.addEventListener('DOMContentLoaded', () => {
+      const gameContainer = document.querySelector('.game-container');
+      if (gameContainer) {
+        document.documentElement.style.setProperty('--game-container-height', gameContainer.offsetHeight + 'px');
+      }
+    });
+    window.addEventListener('resize', () => {
+      const gameContainer = document.querySelector('.game-container');
+      if (gameContainer) {
+        document.documentElement.style.setProperty('--game-container-height', gameContainer.offsetHeight + 'px');
+      }
+    });
   </script>
 </body>
 </html>
