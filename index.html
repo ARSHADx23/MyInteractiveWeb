@@ -600,6 +600,8 @@
           resultText = 'You Win! 🎉';
           resultClass = 'win';
           playerScore++;
+          playerScoreEl.textContent = `You: ${playerScore}`;
+          computerScoreEl.textContent = `Computer: ${computerScore}`;
           showWinningPopup();
         } else {
           if (result === 'lose') {
@@ -610,6 +612,9 @@
             resultText = "It's a Draw! 🤝";
             resultClass = 'draw';
           }
+          // Update scores for lose/draw
+          playerScoreEl.textContent = `You: ${playerScore}`;
+          computerScoreEl.textContent = `Computer: ${computerScore}`;
           choiceBtns.forEach(btn => {
             btn.disabled = false;
           });
