@@ -125,9 +125,18 @@ body {
   align-items: center;
   justify-content: center;
 }
-.choice-btn.pink { border: 3px solid #ffb6d5; }
-.choice-btn.blue { border: 3px solid #b2d7ff; }
-.choice-btn.green { border: 3px solid #43cea2; }
+.choice-btn.pink {
+  border: 3px solid #ffb6d5;
+  background: linear-gradient(135deg, #ffd1e3 60%, #fff0f6 100%);
+}
+.choice-btn.blue {
+  border: 3px solid #b2d7ff;
+  background: linear-gradient(135deg, #b2d7ff 60%, #e0f0ff 100%);
+}
+.choice-btn.green {
+  border: 3px solid #43cea2;
+  background: linear-gradient(135deg, #b6f5c6 60%, #eaffea 100%);
+}
 .choice-btn:active { transform: scale(0.95); }
 
 /* Play Again Button (vertically below the game container) */
@@ -341,8 +350,17 @@ body {
                                                                                                                                                 color: #d72660;
                                                                                                                                                 }
 
-                                                                                                                                                /* --- Choices Buttons Keep Their Aesthetic Backgrounds --- */
-                                                                                                                                                .choice-btn.pink { border: 3px solid #ffb6d5; background: #ffe3f1; }
-                                                                                                                                                .choice-btn.blue { border: 3px solid #b2d7ff; background: #e6f3ff; }
-                                                                                                                                                .choice-btn.green { border: 3px solid #43cea2; background: #e3fff3; }
+                                                                                                                                                /* --- Choices Buttons Keep Their Aesthetic Gradient Backgrounds --- */
+                                                                                                                                                .choice-btn.pink {
+                                                                                                                                                  border: 3px solid #ffb6d5;
+                                                                                                                                                  background: linear-gradient(135deg, #ffd1e3 60%, #fff0f6 100%);
+                                                                                                                                                }
+                                                                                                                                                .choice-btn.blue {
+                                                                                                                                                  border: 3px solid #b2d7ff;
+                                                                                                                                                  background: linear-gradient(135deg, #b2d7ff 60%, #e0f0ff 100%);
+                                                                                                                                                }
+                                                                                                                                                .choice-btn.green {
+                                                                                                                                                  border: 3px solid #43cea2;
+                                                                                                                                                  background: linear-gradient(135deg, #b6f5c6 60%, #eaffea 100%);
+                                                                                                                                                }
                                                                                                                                                 .choice-btn:active { transform: scale(0.95); }
