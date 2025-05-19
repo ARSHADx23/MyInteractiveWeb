@@ -600,11 +600,8 @@
           resultText = 'You Win! 🎉';
           resultClass = 'win';
           playerScore++;
-          document.getElementById('winning-popup').style.display = 'block';
-          document.getElementById('play-again').style.display = 'none';
-          document.getElementById('play-again').style.display = 'none';
+          showWinningPopup();
         } else {
-          document.getElementById('winning-popup').style.display = 'none';
           if (result === 'lose') {
             resultText = 'You Lose! 😢';
             resultClass = 'lose';
@@ -650,6 +647,24 @@
       finalResult.textContent = '';
       finalResult.className = '';
       resultEl.textContent = '';
+    }
+
+    function showWinningPopup() {
+      // Array of gradient backgrounds
+      const gradients = [
+        "linear-gradient(135deg, #ffb6d5 0%, #b2d7ff 100%)",
+        "linear-gradient(135deg, #43cea2 0%, #185a9d 100%)",
+        "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
+        "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+        "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
+        "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)",
+        "linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%)",
+        "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)"
+      ];
+      const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
+      const popup = document.getElementById('winning-popup');
+      popup.style.background = randomGradient;
+      popup.style.display = 'block';
     }
 
     choiceBtns.forEach(btn => {
