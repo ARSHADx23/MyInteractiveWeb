@@ -470,6 +470,7 @@
       padding: 2em 2em 1.5em 2em;
       text-align: center;
       animation: fadeInOpacity 0.7s;
+      min-width: 320px;
     }
     #winning-popup img {
       max-width: 320px;
@@ -481,6 +482,21 @@
       margin: 0;
       position: static;
       transform: none;
+    }
+    #popup-close {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      cursor: pointer;
+      font-size: 2em;
+      color: #333;
+      background: none;
+      border: none;
+      z-index: 10;
+      transition: color 0.2s;
+    }
+    #popup-close:hover {
+      color: #d72660;
     }
   </style>
 </head>
@@ -521,6 +537,7 @@
   <button class="play-again" id="play-again" style="display:none;">Play Again</button>
   <!-- Winning popup: only the gif and play again button -->
   <div id="winning-popup">
+    <span id="popup-close" style="position:absolute;top:1em;right:1em;cursor:pointer;font-size:2em;color:#333;">&times;</span>
     <img src="Asset/winning_annoucement.gif" alt="Winning Announcement">
     <button id="popup-play-again" class="play-again">Play Again</button>
   </div>
@@ -627,7 +644,6 @@
     function resetGame() {
       playerVisual.innerHTML = `<img id="default-rock" src="${images.rock}" alt="Rock">`;
       computerVisual.innerHTML = `<img id="default-rock-computer" src="${images.rock}" alt="Rock">`;
-      document.getElementById('play-again').style.display = 'none';
       document.getElementById('winning-popup').style.display = 'none';
       choiceBtns.forEach(btn => btn.disabled = false);
       const finalResult = document.getElementById('final-result');
@@ -645,11 +661,18 @@
       });
     });
 
-    playAgainBtn.addEventListener('click', resetGame);
     popupPlayAgainBtn.addEventListener('click', () => {
       resetGame();
       winningPopup.classList.remove('show');
     });
+
+    document.getElementById('popup-close').onclick = function() {
+      document.getElementById('winning-popup').style.display = 'none';
+    };
+    document.getElementById('popup-play-again').onclick = function() {
+      resetGame();
+      document.getElementById('winning-popup').style.display = 'none';
+    };
 
     // Initial state
     resetGame();
