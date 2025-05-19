@@ -1,4 +1,0 @@
-<div class="game-container">
-  <!-- ...game content... -->
-</div>
-<button class="play-again" id="play-again" style="display:none;">Play Again</button>
